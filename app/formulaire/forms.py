@@ -1,6 +1,12 @@
 from django import forms 
+from .models import Data
 
-class SendWork(forms.Form):
-    name = forms.CharField(required=True)
-    file = forms.FileField()
+class SendWork(forms.ModelForm):
+    
+    class Meta:
+        model = Data
+        fields = ['name', 'file']
+        
+  
+
     

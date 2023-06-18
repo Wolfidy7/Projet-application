@@ -22,4 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', views.hello),
     path('submit/', views.submit),
+    path('redirect/', views.redirect_view, name='redirection'),
+    #path('cible/', views.receive_form, name = 'cible'),
 ]

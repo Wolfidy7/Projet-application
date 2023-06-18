@@ -2,16 +2,13 @@
     <body>
         <h2>Soumettez votre travail ici !</h2>
 
-        <form action="" method="post" novalidate>
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{formulaire.as_p}}
-            <input type="submit" value="Envoyer">
+            <button type="submit">Enregistrer</button>
         </form>
 
     <body>
-
-
-
 
 
 
