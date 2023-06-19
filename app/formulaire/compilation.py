@@ -26,9 +26,9 @@ def process_zip(zip_file_path, destination_directory):
             if file.endswith('.so'):
                 file_path = os.path.join(root, file)
                 so_files.append(file_path)
-            else:
+            """else:
                 file_path = os.path.join(root, file)
-                os.remove(file_path)
+                os.remove(file_path)"""
 
     return so_files
   

@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from formulaire.models import Data
 from formulaire.forms import SendWork
 from .compilation import *
-from formulaire.tests import test
+from formulaire.tests import glibc_test
 from time import *
 
 def hello(request):
@@ -33,9 +33,7 @@ def submit(request):
             #récupétation de tous les fichiers so
             so_files_list = process_zip(fichier,"files/so_files/"+nom)
             #test de chaque fichier
-            for i in so_files_list:
-                print(i)
-                test.load_and_test_so_file(i)
+            glibc_test.load_and_test_so_file("files/so_files/" + nom + "/src")
             return redirect('redirection')
     
     else:
