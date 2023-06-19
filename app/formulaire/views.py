@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from formulaire.models import Data
 from formulaire.forms import SendWork
+from .compilation import *
+from .tests import load_and_test_so_file
+from time import *
 
 def hello(request):
     
@@ -26,6 +29,13 @@ def submit(request):
             # Enregistrer le nom du fichier et le fichier dans la base de données
             data = Data(name=nom, file= fichier)
             data.save()
+            sleep(1)
+            #récupétation de tous les fichiers so
+            so_files_list = process_zip(fichier,"files/so_files/"+nom)
+            #test de chaque fichier
+            for i in so_files_list:
+                print(i)
+                load_and_test_so_file(i)
             return redirect('redirection')
     
     else:
