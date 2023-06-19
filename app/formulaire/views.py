@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from formulaire.models import Data
 from formulaire.forms import SendWork
 from .compilation import *
-from .tests import load_and_test_so_file
+from formulaire.tests import test
 from time import *
 
 def hello(request):
@@ -35,7 +35,7 @@ def submit(request):
             #test de chaque fichier
             for i in so_files_list:
                 print(i)
-                load_and_test_so_file(i)
+                test.load_and_test_so_file(i)
             return redirect('redirection')
     
     else:
