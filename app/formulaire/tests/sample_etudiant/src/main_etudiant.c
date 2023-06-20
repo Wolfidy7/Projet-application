@@ -19,6 +19,5 @@ int main() {
         printf("Erreur lors de l'ouverture du fichier.\n");
     }
 
-
     return 0;
 }
