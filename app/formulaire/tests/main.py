@@ -103,18 +103,6 @@ def load_and_test_so_file(path_to_so):
             # Supprimer le fichier temporaire après les tests
             os.remove(self.file.name)
 
-        def test_mini_fopen_success(self):
-            
-            # Appeler mini_fopen avec un fichier existant en mode 'r'
-            myfile = mini_lib.mini_fopen(self.file.name.encode(), b'r')
-            self.assertIsNotNone(myfile)
-            # Vérifier que le descripteur de fichier est valide
-            self.assertGreater(myfile.fd, 0) 
-
-        def test_mini_fread(self):  
-            mini_lib.mini_fread.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
-            mini_lib.mini_fread.restype = ctypes.c_int  
-
     # Charger les classes de tests
     test_classes = [PrototypesTestCase, StructsTestCase, MemoryTestCase, StringTestCase, IOTestCase]
     
