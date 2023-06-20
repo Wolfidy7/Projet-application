@@ -1,0 +1,3 @@
+Résultat de l'addition : 13
+Factoriel de 5 : 120
+Résultat de la division : 3.333333

@@ -23,5 +23,6 @@ urlpatterns = [
          ),
     path('signup/', authentication.views.signup_page, name='signup'),
     path('home/', blog.views.home, name='home'),
-    path('p_submit/',blog.views.submitSubject, name='p_submit')
+    path('p_submit/',blog.views.submitSubject, name='p_submit'),
+    path('redirect/',blog.views.p_redirect, name='redirect')
 ]

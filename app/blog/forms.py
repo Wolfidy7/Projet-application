@@ -6,5 +6,13 @@ class SubmitSubject(forms.ModelForm):
     
     class Meta:
         model = models.Subject
-        fields = ['subject', 'correction']
+        fields = ['subject', 'correction', 'categorie']
+        
+        
+
+class SubmitWork(forms.ModelForm):
+    
+    class Meta:
+        model = models.Subject
+        fields = []
     
