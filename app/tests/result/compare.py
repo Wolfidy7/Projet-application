@@ -13,18 +13,17 @@ def compile_and_execute_correction(correction_dir):
     subprocess.run(commande_compilation, cwd=correction_dir)
 
     # Exécution du programme et sauvegarde de la sortie dans un fichier
-    with open('resultats.txt', 'w') as output_file:
+    with open('/home/dini/Projet-application/app/tests/result/resultats.txt', 'w') as output_file:
         subprocess.run('./program', stdout=output_file, cwd=correction_dir, shell=True)
 
 def compile_and_execute(student_src_dir):
     
     # Chemin du code d'eleve
     # contenant les fichiers C
-
     student_src_dir = student_src_dir
 
     # Liste des fichiers C dans le student_src_dir
-    fichiers_c =  [fichier for fichier in os.listdir(student_src_dir) if fichier.endswith('.c') and fichier != 'main.c']
+    fichiers_c =  [fichier for fichier in os.listdir(student_src_dir) if fichier.endswith('.c')]
 
     # Commande de compilation
     commande_compilation = ['gcc', '-o', 'program'] + [fichier for fichier in fichiers_c]
@@ -33,7 +32,7 @@ def compile_and_execute(student_src_dir):
     subprocess.run(commande_compilation, cwd=student_src_dir)
 
     # Exécution du programme et sauvegarde de la sortie dans un fichier
-    with open('resultats_etudiant.txt.txt', 'w') as output_file:
+    with open('/home/dini/Projet-application/app/tests/result/resultats_etudiant.txt', 'w') as output_file:
         subprocess.run('./program', stdout=output_file, cwd=student_src_dir, shell=True)
 
 def compare(student_text, correction_text):
@@ -43,7 +42,7 @@ def compare(student_text, correction_text):
         lignes2 = file2.readlines()
 
     nb_lignes_identiques = 0
-    nb_lignes_total = len(lignes1)
+    nb_lignes_total = len(lignes2)
 
     # Vérification des lignes identiques
     for ligne1, ligne2 in zip(lignes1, lignes2):
@@ -53,7 +52,7 @@ def compare(student_text, correction_text):
     print(f"Nombre total de lignes : {nb_lignes_total}")
     print(f"Nombre de lignes identiques : {nb_lignes_identiques}")
 
-    return nb_lignes_identiques/nb_lignes_total
+    return nb_lignes_identiques/nb_lignes_total * 20
 
 def compile_exec_text(path_src_student):
 # def compile_exec_text():
