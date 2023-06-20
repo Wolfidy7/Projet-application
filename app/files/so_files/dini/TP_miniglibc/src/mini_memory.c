@@ -1,82 +1,92 @@
-#include <stdio.h> 
-#include <unistd.h>
-#include <strings.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "mini_lib.h"
+
+#include <stdio.h>
+#include <unistd.h>
+
+struct malloc_element {
+    void *mem;
+    int size;
+    int state;
+    struct malloc_element *next;
+};
+
+typedef struct malloc_element malloc_element;
+
 
 malloc_element *malloc_list = NULL;
 
-void* mini_calloc(int size_element, int number_element){
-   if(size_element < 0){
-      puts("error : ");
-      return NULL;
-   }
+void *mini_calloc(int size_element, int number_element) {
+    if (size_element <= 0 || number_element <= 0) {
+        return NULL;
+    }
 
-   malloc_element *pointeur_element = malloc_list;
+    // reuse freed memory if possible
+    malloc_element *element = malloc_list;
+    while (element != NULL) {
+        if (element->state == 0 && element->size >= size_element * number_element) {
+            element->state = 1;
+            char *ptrc     = (char *)element->mem;
+            for (int i = 0; i < size_element * number_element; i++) {
+                ptrc[i] = '\0';
+            }
+            return element->mem;
+        }
 
-   if(malloc_list != NULL){
-      /* parcours malloc_list pour ajouter le nouveau malloc_element à la fin*/
-      while(pointeur_element->next_calloc != NULL){
-         /* réutiliser la zone libérée, si la taille demandée est plus petite ou égale à la taille d’une zone libérée */
-         if(pointeur_element->taille <= size_element*number_element && pointeur_element->status == 0){
-            /* initialise le buffer avec des ’ \0 ’  */
-            printf("%d\n", pointeur_element->status);
-            bzero(pointeur_element->zone_alloue, size_element*number_element);
-            pointeur_element->status = 1;
-            return pointeur_element->zone_alloue;
-         }
-         else{
-            pointeur_element = pointeur_element->next_calloc;
-         }
+        element = element->next;
+    }
 
-      }
-   }
-   
-   malloc_element *element = sbrk(sizeof(malloc_element));
 
-   if((element->zone_alloue = sbrk(size_element*number_element)) == (void*)(-1)){
-      puts("error : ");
-      return NULL;
-   }
-   element->taille =  size_element*number_element;
+    void *ptr = sbrk(size_element * number_element);
+    if (ptr == (void *)-1) {
+        mini_printf("sbrk error\n");
+        return NULL;
+    }
+    char *ptrc = (char *)ptr;
+    for (int i = 0; i < size_element * number_element; i++) {
+        ptrc[i] = '\0';
+    }
 
-   /* initialise le buffer avec des ’ \0 ’  */
-   bzero(element->zone_alloue, size_element*number_element);
-   element->status = 1;
-   element->next_calloc = NULL;
+    element = sbrk(sizeof(malloc_element));
+    if ((void *)element == (void *)-1) {
+        mini_printf("sbrk error\n");
+        sbrk(-size_element * number_element);  // free allocated memory
+        return NULL;
+    }
+    element->mem   = ptr;
+    element->size  = size_element * number_element;
+    element->state = 1;
+    element->next  = malloc_list;
 
-   /* ajouter la zone allouée à la liste malloc_list. */
-   if(malloc_list == NULL) {
-      malloc_list = element;
-   }
-   else{
-      pointeur_element->next_calloc = element;
-   }
+    malloc_list = element;
 
-   return element->zone_alloue;
-
+    return ptr;
 }
 
-void mini_free(void* ptr){
+void mini_free(void *ptr) {
+    malloc_element *element = malloc_list;
 
-   malloc_element *current_element = malloc_list;
-   
-   //cherche l'élément à libérer dans le malloc_list
-   while(current_element->zone_alloue != ptr && current_element->next_calloc != NULL){
-   	current_element = current_element->next_calloc;
-   }
-
-   if(current_element->zone_alloue != NULL && current_element->status == 1){
-   	current_element->status = 0;
-   }
-   
-   /* Vérification de fonction */
-   // printf("La zone mémoire de %d a été liberée at %p\n", current_element->taille, current_element);
-   // puts("done mini_free");
+    while (element->mem != ptr) {
+        element = element->next;
+        if (element == NULL) {
+            return;
+        }
+    }
+    element->state = 0;
+    return;
 }
 
-void mini_exit(){
-   mini_exitString();
-   _exit(0);
+void mini_exit() {
+    if (write(STDOUT_FILENO, buffer, ind) == -1) {
+        /*mini_printf("write2\n");*/
+        /*return;*/
+    }
+    MYFILE *file = myfile_list;
+    MYFILE *next_file;
+    while(file != NULL) {
+        next_file = file->next;
+        mini_fclose(file);
+        file = next_file;
+    }
+
+    _exit(0);
 }

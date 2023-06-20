@@ -1,59 +1,48 @@
-#ifndef MINI_LIB
-#define MINI_LIB
+#ifndef MINI_LIB_H
+#define MINI_LIB_H
 
-#define IOBUFFER_SIZE 2048
+#include <stddef.h>
+#include <errno.h>
 
-typedef struct malloc_element{
-   
-   void * zone_alloue;
-   int taille;
-   int status;
-   struct malloc_element * next_calloc;
-
-} malloc_element;
-
-typedef struct MYFILE
-{
-    /* data */
+struct MYFILE {
     int fd;
-    void * buffer_read;
-    void * buffer_write;
+    void *buffer_read;
+    void *buffer_write;
     int ind_read;
     int ind_write;
+    struct MYFILE *next;
+};
 
-} MYFILE;
+typedef struct MYFILE MYFILE;
 
-/* Les prototypes des fonctions de mini_memory.c */
-void* mini_calloc (int, int);
+extern MYFILE *myfile_list;
 
-void mini_free(void*);
-
+void* mini_calloc(int size_element, int number_element);
+void mini_free(void* ptr);
 void mini_exit();
 
-/* Les prototypes des fonctions de mini_string.c */
-void mini_printf(char *);
+void mini_printf(char *str);
+int mini_scanf(char* buffer, int size_buffer);
+int mini_strlen(char* s);
+int mini_strcpy(char* s, char *d);
+int mini_strncpy(char* d, char *s, int n);
+int mini_strncat(char *d, char *s, int n);
+int mini_strcmp(char* s1, char* s2);
+int mini_strncmp(char *s1, char *s2, int n);
+char *mini_itoa(int lines);
+int mini_atoi(char *lines, int base);
+int find_str(char *buf, char c);
 
-int mini_scanf(char *, int);
+MYFILE* mini_fopen(char* file, char mode);
+int mini_fread(void* buffer,int size_element, int number_element, MYFILE* file);
+int mini_fwrite(void* buffer,int size_element, int number_element, MYFILE* file);
+int mini_fflush(MYFILE* file);
+int mini_fclose(MYFILE *file);
+int mini_fgetc(MYFILE* file);
+int mini_fputc(MYFILE* file, char c);
+int mini_getline(MYFILE *file, char *buf, int BUFSIZE);
 
-int mini_strlen(const char *);
+extern char *buffer;
+extern int ind;
 
-int mini_strcpy(const char *, char *);
-
-int mini_strcmp(const char*, char*);
-
-void mini_exitString();
-
-/* Les protypes des fonctions de mini_io.c */
-MYFILE* mini_fopen(char*, char);
-
-int mini_fread(void*,int, int, MYFILE*);
-
-int mini_fwrite(void*,int, int, MYFILE*);
-
-int mini_fflush(MYFILE*);
-
-int mini_fgetc(MYFILE*);
-
-int mini_fputc(MYFILE*, char);
-
-#endif
+#endif  // MINI_LIB_H
