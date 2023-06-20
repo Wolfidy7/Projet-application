@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from formulaire.models import Data
 from formulaire.forms import SendWork
 from .compilation import *
-from formulaire.tests import glibc_test
+from formulaire.tests import main
 from time import *
 
 def hello(request):
@@ -33,7 +33,7 @@ def submit(request):
             #récupétation de tous les fichiers so
             so_files_list = process_zip(fichier,"files/so_files/"+nom)
             #test de chaque fichier
-            glibc_test.load_and_test_so_file("files/so_files/" + nom + "/src")
+            main.load_and_test_so_file("/home/dini/Projet-application/app/files/so_files/" + nom + "/TP_miniglibc/src")
             return redirect('redirection')
     
     else:
