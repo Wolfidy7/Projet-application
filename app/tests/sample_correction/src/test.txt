@@ -1,0 +1,1 @@
+Les résultats ont été écrits dans le fichier 'resultats.txt'.

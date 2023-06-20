@@ -3,8 +3,9 @@ from django.shortcuts import redirect, render
 from formulaire.models import Data
 from formulaire.forms import SendWork
 from .compilation import *
-from formulaire.tests import main
+from tests.result import compare
 from time import *
+import shutil
 
 def hello(request):
     
@@ -31,9 +32,15 @@ def submit(request):
             data.save()
             sleep(1)
             #récupétation de tous les fichiers so
-            so_files_list = process_zip(fichier,"files/so_files/"+nom)
-            #test de chaque fichier
-            main.load_and_test_so_file("/home/dini/Projet-application/app/files/so_files/" + nom + "/TP_miniglibc/src")
+            student_dir = "tests/sample_etudiant/" + nom
+            correction_main = "/home/dini/Projet-application/app/tests/sample_correction/src/main.c"
+            decompress_zip(fichier, student_dir)
+
+            # copy main file
+            shutil.copy(correction_main, student_dir  + "/TP_miniglibc/src")
+        
+            # test de chaque fichier
+            compare.compile_exec_text( student_dir  + "/TP_miniglibc/src")
             return redirect('redirection')
     
     else:
