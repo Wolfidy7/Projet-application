@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Veuillez soumettre votre devoir</h3>
+
+    <form method="post" enctype="multipart/form-data">
+    {{ formi.as_p}}
+    {% csrf_token %}
+    <button type="submit">Déposer le devoir</button>
+    
+{% endblock content %}

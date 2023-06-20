@@ -1,53 +1,48 @@
 import subprocess, os
+from time import *
 
-def compile_and_execute_correction():
-    # Chemin du correction
-    # contenant les fichiers C
-    correction = '/home/dini/Projet-application/app/formulaire/tests/sample_correction/src'
+def compile_and_execute_correction(correction_dir, text):
 
-    # Liste des fichiers C dans le dossier
-    fichiers_c = [fichier for fichier in os.listdir(correction) if fichier.endswith('.c')]
+    # Liste des fichiers C dans le student_src_dir
+    fichiers_c = [fichier for fichier in os.listdir(correction_dir) if fichier.endswith('.c')]
 
     # Commande de compilation
-    commande_compilation = ['gcc', '-o', 'program'] + [os.path.join(correction, fichier) for fichier in fichiers_c]
+    commande_compilation = ['gcc', '-o', 'program'] + [fichier for fichier in fichiers_c]
 
     # Compilation des fichiers
-    subprocess.run(commande_compilation, cwd=correction)
+    subprocess.run(commande_compilation, cwd=correction_dir)
 
-    # Commande d'exécution
-    commande_execution = ['./program']
+    # Exécution du programme et sauvegarde de la sortie dans un fichier
+    with open(text, 'w') as output_file:
+        subprocess.run('./program', stdout=output_file, cwd=correction_dir, shell=True)
 
-    # # Exécution du programme
-    subprocess.run(commande_execution, cwd=correction)
-
-def compile_and_execute(student_dir):
+def compile_and_execute(student_src_dir):
     
     # Chemin du code d'eleve
     # contenant les fichiers C
-    dossier = student_dir + '/src'
+    student_src_dir = student_src_dir
 
-    # Liste des fichiers C dans le dossier
-    fichiers_c = [fichier for fichier in os.listdir(dossier) if fichier.endswith('.c')]
+    # Liste des fichiers C dans le student_src_dir
+    fichiers_c =  [fichier for fichier in os.listdir(student_src_dir) if fichier.endswith('.c')]
 
     # Commande de compilation
-    commande_compilation = ['gcc', '-o', 'program'] + [os.path.join(dossier, fichier) for fichier in fichiers_c]
+    commande_compilation = ['gcc', '-o', 'program'] + [fichier for fichier in fichiers_c]
 
     # Compilation des fichiers
-    subprocess.run(commande_compilation, cwd=dossier)
+    subprocess.run(commande_compilation, cwd=student_src_dir)
 
-    # Commande d'exécution
-    commande_execution = ['./program']
+    # Exécution du programme et sauvegarde de la sortie dans un fichier
+    with open('/home/dini/Projet-application/app/tests/result/resultats_etudiant.txt', 'w') as output_file:
+        subprocess.run('./program', stdout=output_file, cwd=student_src_dir, shell=True)
 
-    # Exécution du programme
-    subprocess.run(commande_execution, cwd=dossier)
+def compare(student_text, correction_text):
 
-def verifier_lignes_identiques(student_file, correction_text):
-    with open(student_file, 'r') as file1, open(correction_text, 'r') as file2:
+    with open(student_text, 'r') as file1, open(correction_text, 'r') as file2:
         lignes1 = file1.readlines()
         lignes2 = file2.readlines()
 
     nb_lignes_identiques = 0
-    nb_lignes_total = len(lignes1)
+    nb_lignes_total = len(lignes2)
 
     # Vérification des lignes identiques
     for ligne1, ligne2 in zip(lignes1, lignes2):
@@ -57,14 +52,18 @@ def verifier_lignes_identiques(student_file, correction_text):
     print(f"Nombre total de lignes : {nb_lignes_total}")
     print(f"Nombre de lignes identiques : {nb_lignes_identiques}")
 
-    return nb_lignes_identiques/nb_lignes_total
+    return (nb_lignes_identiques/nb_lignes_total) * 20
 
-# genere correction une seul fois des que le TP est transmis
-compile_and_execute_correction()
+def compile_exec_text(path_src_student):
+# def compile_exec_text():
 
-# chaque fois aue l'eleve transmis son travail
-compile_and_execute('/home/dini/Projet-application/app/formulaire/tests/sample_etudiant')
+    # genere correction_dir une seul fois des que le TP est transmis
+    compile_and_execute_correction('/home/dini/Projet-application/app/tests/sample_correction/src')
 
-# comparer les resultats
-result = verifier_lignes_identiques('resultats_etudiant.txt', 'resultats.txt')
-print(f"Pourcentage : {result}")
+    # chaque fois aue l'eleve transmis son travail
+    compile_and_execute(path_src_student)
+
+    result = compare('/home/dini/Projet-application/app/tests/result/resultats_etudiant.txt', '/home/dini/Projet-application/app/tests/result/resultats.txt')
+
+    print("Pourcentage: ", result)
+

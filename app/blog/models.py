@@ -13,10 +13,11 @@ class Subject(models.Model):
        
     id_user = models.ForeignKey(authentication.models.User,
                                 on_delete=models.CASCADE)
+    #username = models.CharField(max_length=150, null=True)
     subject = models.FileField()
-    correction = models.FileField()
+    correction = models.FileField(upload_to="data/corrections/")
     categorie = models.CharField(choices=CATEGORY_CHOICES, max_length=30, default=SYSTEME)
-    
+    devoir = models.FileField(null=True, upload_to="data/devoirs/")
 
 class Resultat(models.Model):
     
