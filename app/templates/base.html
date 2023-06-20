@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>CORRECT'INSA</title>
+    </head>
+    <body>
+        <h1>CORRECT'INSA</h1>
+        
+        {%  if user.is_authenticated %}
+            <p>Vous êtes connecté en tant que {{ user }}.</p>
+            <a href="{% url 'home' %}">Accueil</a><br>
+            <a href="{% url 'home' %}">Soumettre un devoir</a><br>
+            <a href="{% url 'home'%}">Mes notes</a><br>
+            <a href="{% url 'p_submit'%}">Soumettre un sujet</a><br>
+            <a href="{% url 'home'%}">Statistiques</a><br>
+            <a href="{% url 'logout' %}">Se déconnecter</a>
+
+            <p>Voulez-vous <a href="{% url 'password_change' %}">changer votre mot de passe ?</a></p>
+            
+        {% endif %}
+        {% block content %}{% endblock content %}
+    </body>
+</html>

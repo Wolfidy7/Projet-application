@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Veuillez soumettre votre sujet de TD/TP</h3>
+
+    <form method="post" enctype="multipart/form-data">
+    {{ formu.as_p}}
+    {% csrf_token %}
+    <button type="submit">Déposer le sujet</button>
+    
+{% endblock content %}
+
+
