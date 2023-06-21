@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
+
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/styles.css' %}">
+{% endblock extra_css %}
+
+{% block extra_js %}
+    {% load static %}
+    <script src="{% static '/js/scripts.js' %}"></script>
+{% endblock extra_js %}
+
 {% block content %}
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Se connecter</button>
-    </form>
-    <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
+    <div class="container">
+        <div class="login-form">
+            <h2>Connexion</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Se connecter</button>
+            </form>
+        </div>
+        <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
+    </div>
 {% endblock content %}
