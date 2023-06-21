@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+                                                                         
+<h1>Statistiques des résultats par catégorie</h1>
+    <div id="graph0"></div>
+
+    <script>
+        var graphJSON = {{ graph0|safe }};
+
+        // Afficher le graphique en utilisant Plotly.js
+        Plotly.newPlot('graph0', graphJSON);
+    </script>
+
+
+    <div id="graph1"></div>
+
+    <script>
+        var graphJSON1 = {{ graph1|safe }};
+
+        // Afficher le graphique en utilisant Plotly.js
+        Plotly.newPlot('graph1', graphJSON1);
+    </script>
+    
+{% endblock content %}
+
+
+
+

@@ -27,5 +27,6 @@ urlpatterns = [
     path('e_submit/',blog.views.submitWork, name='e_submit'),
     path('p_redirect/',blog.views.p_redirect, name='p_redirect'),
     path('e_redirect/',blog.views.e_redirect, name='e_redirect'),
-    path('mes_notes/',blog.views.view_notes, name='notes')
+    path('mes_notes/',blog.views.view_notes, name='notes'),
+    path('statistics/',blog.views.view_statistics, name='stats')
 ]

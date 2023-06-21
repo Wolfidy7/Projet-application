@@ -4,6 +4,8 @@ from . import forms, models
 from blog.models import *
 from blog.test.compare import *
 from blog.compilation import *
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 
 @login_required
@@ -108,3 +110,50 @@ def view_notes(request):
     results = Resultat.objects.filter(id_user=user).select_related('id_subject')
     return render(request, 'blog/notes.html', {'results': results})
 
+
+
+def view_statistics(request):
+    # Récupérer les données de notes pour les catégories "SYSTEME" et "GENTOO"
+    results = Resultat.objects.filter(id_subject__categorie=Subject.SYSTEME)
+    notes = [result.note for result in results]
+    
+    
+    results1 = Resultat.objects.filter(id_subject__categorie=Subject.GENTOO)
+    notes1 = [result.note for result in results1]
+    
+
+    # Créer le histogramme pour les catégories "SYSTEME" et "GENTOO"
+    histogram = go.Histogram(x=notes, name='SYSTEME', opacity=0.7, nbinsx=20)
+    
+    histogram1 = go.Histogram(x=notes1, name='GENTOO', opacity=0.7, nbinsx=20)
+    
+
+    # Personnaliser le layout des diagrammes
+    
+    #SYSTEME
+    layout = go.Layout(
+        title='Répartition des notes - SYSTEME',
+        xaxis=dict(title='Notes', range=[0, 20], dtick=1),
+        yaxis=dict(title='Nombre d\'élèves')
+    )
+    
+    #GENTOO
+    layout1 = go.Layout(
+        title='Répartition des notes - GENTOO',
+        xaxis=dict(title='Notes', range=[0, 20], dtick=1),
+        yaxis=dict(title='Nombre d\'élèves')
+    )
+    
+
+    # Créer les figures à partir du histogramme et du layout
+    fig = go.Figure(data=[histogram], layout=layout)  #SYSTEME
+    fig1 = go.Figure(data=[histogram1], layout=layout1) #GENTOO
+    
+
+    # Convertir les figures en JSON pour les afficher dans le template
+    graph_json = fig.to_json()
+    graph_json1 = fig1.to_json()
+
+
+    context = {'graph0': graph_json, 'graph1': graph_json1}
+    return render(request, 'blog/statistics.html', context)
