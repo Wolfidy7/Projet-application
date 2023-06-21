@@ -1,5 +1,6 @@
 import subprocess, os
 from time import *
+import shutil
 
 def compile_and_execute_correction(correction_dir, text):
 
@@ -16,7 +17,7 @@ def compile_and_execute_correction(correction_dir, text):
     with open(text, 'w') as output_file:
         subprocess.run('./program', stdout=output_file, cwd=correction_dir, shell=True)
 
-def compile_and_execute(student_src_dir):
+def compile_and_execute(student_src_dir, resultat_etudiant):
     
     # Chemin du code d'eleve
     # contenant les fichiers C
@@ -32,7 +33,7 @@ def compile_and_execute(student_src_dir):
     subprocess.run(commande_compilation, cwd=student_src_dir)
 
     # Exécution du programme et sauvegarde de la sortie dans un fichier
-    with open('/home/dini/Projet-application/app/tests/result/resultats_etudiant.txt', 'w') as output_file:
+    with open(resultat_etudiant, 'w') as output_file:
         subprocess.run('./program', stdout=output_file, cwd=student_src_dir, shell=True)
 
 def compare(student_text, correction_text):
@@ -54,16 +55,17 @@ def compare(student_text, correction_text):
 
     return (nb_lignes_identiques/nb_lignes_total) * 20
 
-def compile_exec_text(path_src_student):
+def compile_exec_text(path_main_prof, path_src_student, resultat_etudiant, resultat_prof): #compilation et exécution pour l'étudiant
 # def compile_exec_text():
 
-    # genere correction_dir une seul fois des que le TP est transmis
-    compile_and_execute_correction('/home/dini/Projet-application/app/tests/sample_correction/src')
+    # copy main file
+    shutil.copy(path_main_prof, path_src_student)
+        
 
     # chaque fois aue l'eleve transmis son travail
-    compile_and_execute(path_src_student)
+    compile_and_execute(path_src_student, resultat_etudiant)
 
-    result = compare('/home/dini/Projet-application/app/tests/result/resultats_etudiant.txt', '/home/dini/Projet-application/app/tests/result/resultats.txt')
-
-    print("Pourcentage: ", result)
+    result = compare(resultat_etudiant, resultat_prof)
+    print("Note obtenue:", result)
+    return result
 

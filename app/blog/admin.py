@@ -5,3 +5,4 @@ from blog.models import *
 # Register your models here.
 admin.site.register(User)
 admin.site.register(Subject)
+admin.site.register(Resultat)
