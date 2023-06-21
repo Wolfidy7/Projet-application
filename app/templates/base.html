@@ -2,6 +2,7 @@
     <head>
         <title>CORRECT'INSA</title>
         {% block extra_css %}{% endblock extra_css %}
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
     <body>
         <h1>CORRECT'INSA</h1>
@@ -9,10 +10,15 @@
         {%  if user.is_authenticated %}
             <p>Vous êtes connecté en tant que {{ user }}.</p>
             <a href="{% url 'home' %}">Accueil</a><br>
+            {% if user.role == 'STUDENT' %}
             <a href="{% url 'e_submit' %}">Soumettre un devoir</a><br>
             <a href="{% url 'notes' %}">Mes notes</a><br>
+            {% endif %}
+
+            {% if user.role == 'PROFESSOR' %}
             <a href="{% url 'p_submit'%}">Soumettre un sujet</a><br>
-            <a href="{% url 'home'%}">Statistiques</a><br>
+            <a href="{% url 'stats'%}">Statistiques</a><br>
+            {% endif %}
             <a href="{% url 'logout' %}">Se déconnecter</a>
 
             <p>Voulez-vous <a href="{% url 'password_change' %}">changer votre mot de passe ?</a></p>
