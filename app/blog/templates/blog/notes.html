@@ -6,13 +6,14 @@
 
 {% block content %}
     {% if results or results1 %}
-        <h1>Récapitulatif de vos notes </h1>
-        <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruits  &#128521; </h4>
+        <h1>Récapitulatif des notes </h1>
+        
 
         <table class="table">
 
 
             {% if user.role == 'STUDENT' %}
+            <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruits  &#128521; </h4>
             <thead>
                 <tr>
                     <th>Catégorie</th>
@@ -41,7 +42,7 @@
             <tbody>
                 {% for result1 in results1 %}
                     <tr>
-                        <td>{{ result1.id_subject.username }}</td>
+                        <td>{{ result1.id_subject.id_user.username }}</td>
                         <td>{{ result1.id_subject.categorie }}</td>
                         <td>{{ result1.note }}</td>
                     </tr>
@@ -51,7 +52,7 @@
 
         </table>
     {% else %}
-    <h1>Récapitulatif de vos notes </h1>
+    <h1>Récapitulatif des notes </h1>
 
         <p class="no-notes-message">Oops, Vous n'avez pas de notes disponibles.  &#128531;</p>
     {% endif %}

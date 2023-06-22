@@ -2,7 +2,7 @@
 
 // Implémentation de la fonction addition
 int addition(int a, int b) {
-    return a/b ;
+    return a + b;
 }
 
 // Implémentation de la fonction factoriel

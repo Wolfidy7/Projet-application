@@ -4,7 +4,10 @@
 
 <ul>
 {% for objet in objets %}
-<p><a href="base.html" download>{{CORRECTION_URL }}{{objet.subject.name}}</a></p>
+<a href="{{ objet.url }}" target="_blank">
+    {{objet.categorie}}<br>
+    <embed src="{{ objet.url }}" width="800" height="600" type="application/pdf">
+</a>
 {% endfor %}       
 </ul>                                                       
 

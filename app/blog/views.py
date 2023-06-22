@@ -122,12 +122,14 @@ def e_redirect(request):
 
 def view_notes(request):
     user = request.user
-    results = Resultat.objects.filter(id_user=user).select_related('id_subject')
+    results = Resultat.objects.select_related('id_subject').filter(id_user=user)
+    
     return render(request, 'blog/notes.html', {'results': results})
+
 
 def view_student_notes(request):
     students = authentication.models.User.objects.filter(role='STUDENT')
-    results1 = Resultat.objects.filter(id_user__in=students)
+    results1 = Resultat.objects.select_related('id_user').filter(id_user__in=students)
     print("******************")
     print(results1)
     return render(request, 'blog/notes.html', {'results1': results1})
@@ -183,6 +185,6 @@ def view_statistics(request):
 def show_availables(request):
     objets = Subject.objects.exclude(subject__exact='')
     print("***************************")
-    print(objets)
-    context = {'objets': objets, 'CORRECTION_URL': settings.CORRECTION_URL}
+    print(objets[0].url)
+    context = {'objets': objets}
     return render(request, 'blog/availables.html', context)

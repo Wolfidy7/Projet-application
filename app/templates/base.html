@@ -17,7 +17,7 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
     <body id="element">
-        <h1>CORRECT'INSA</h1>
+        {% comment %} <h1>CORRECT'INSA</h1> {% endcomment %}
         <div class="container-fluid h-100">
             <div class="row vh-100">
                 <div class="col-3 d-flex flex-column" style="background-color: red;">
@@ -60,13 +60,13 @@
                                     <a href="{% url 'e_submit' %}" class="btn btn-outline-primary btn-block">Soumettre un devoir</a>
                                 </div>
                             </div>
-                            {% endif %}
+                            
                             <div class="card  mb-3">
                                 <div class="card-body">
-                                    <a href="{% url 'notes' %}" class="btn btn-outline-primary btn-block ">Notes</a>
+                                    <a href="{% url 'notes' %}" class="btn btn-outline-primary btn-block ">Mes notes</a>
                                 </div>
                             </div>
-                        
+                        {% endif %}
 
                         {% if user.role == 'PROFESSOR' %}
                             <div class="card  mb-3">
@@ -77,6 +77,12 @@
                             <div class="card  mb-3">
                                 <div class="card-body">
                                     <a href="{% url 'stats'%}" class="btn btn-outline-primary btn-block ">Statistiques</a>
+                                </div>
+                            </div>
+
+                            <div class="card  mb-3">
+                                <div class="card-body">
+                                    <a href="{% url 'notes1' %}" class="btn btn-outline-primary btn-block ">Notes de mes étudiants</a>
                                 </div>
                             </div>
                         {% endif %}
