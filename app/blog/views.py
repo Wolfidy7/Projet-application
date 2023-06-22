@@ -127,8 +127,10 @@ def view_notes(request):
 
 def view_student_notes(request):
     students = authentication.models.User.objects.filter(role='STUDENT')
-    results = Resultat.objects.filter(id_user__in=students)
-    return render(request, 'blog/notes.html', {'results': results})
+    results1 = Resultat.objects.filter(id_user__in=students)
+    print("******************")
+    print(results1)
+    return render(request, 'blog/notes.html', {'results1': results1})
 
 def view_statistics(request):
     # Récupérer les données de notes pour les catégories "SYSTEME" et "GENTOO"
