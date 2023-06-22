@@ -1,6 +1,7 @@
 import os, subprocess, zipfile, tarfile, glob
 from blog.test.compare import *
 from blog.test_gentoo import *
+from blog.test_irc import *
 
 def decompress_zip(zip_file, destination):
     with zipfile.ZipFile(zip_file, 'r') as zip_ref:
@@ -114,6 +115,9 @@ def eval_tp_reseau(categorie_name, devoir, student_name):
     compile_server_irc(path_devoirs + "/src")
     compile_client_irc(path_devoirs + "/src")
 
+    note = start_server(path_devoirs + "/src")
+
+
     destination = "./data/student_files/" + categorie_name + "/" + student_name
 
     # Vérifier si le dossier de destination existe, sinon le créer
@@ -130,4 +134,4 @@ def eval_tp_reseau(categorie_name, devoir, student_name):
 
     print("All zip files have been deleted.")
 
-    return 10
+    return note

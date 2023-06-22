@@ -1,7 +1,7 @@
 import subprocess
 import time
 
-def test_functionalities():
+def test_functionalities(cwd):
     passed_functionalities = 0
     total_points = 0
 
@@ -20,12 +20,12 @@ def test_functionalities():
     CLIENT_EXEC = "./ircclient"
 
     print("Starting server...")
-    server_process = subprocess.Popen([SERVEUR_EXEC], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    server_process = subprocess.Popen([SERVEUR_EXEC], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd)
     time.sleep(2)
 
     print("Starting client...")
     command = [CLIENT_EXEC, SERVER_IP, str(SERVER_PORT)]
-    client_process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+    client_process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8', cwd=cwd)
 
     # Register a nickname
     client_process.stdin.write('/register testbot password is good \n')
@@ -81,21 +81,21 @@ def test_functionalities():
     return total_points
 
 
-def test_multiple_connections(num_connections):
+def test_multiple_connections(num_connections, cwd):
     SERVER_IP = "127.0.0.1"
     SERVER_PORT = 8003
 
     SERVEUR_EXEC = "./ircserver"
     CLIENT_EXEC = "./ircclient"
 
-    serveur_process = subprocess.Popen([SERVEUR_EXEC])
+    serveur_process = subprocess.Popen([SERVEUR_EXEC], cwd=cwd)
     time.sleep(2)
 
     successful_connections = 0
 
     # Lancer plusieurs clients et vérifier les connexions
     for i in range(num_connections):
-        client_process = subprocess.Popen([CLIENT_EXEC, SERVER_IP, str(SERVER_PORT)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+        client_process = subprocess.Popen([CLIENT_EXEC, SERVER_IP, str(SERVER_PORT)], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8', cwd=cwd)
         time.sleep(1)  # Attendre un peu avant de lancer le client suivant
 
         if client_process.poll() is None:
@@ -111,20 +111,23 @@ def test_multiple_connections(num_connections):
     return successful_connections * 2
 
 
-print("Starting test...")
+def start_server(cwd):
+    print("Starting test...")
 
-print("--------------------------------------")
+    print("--------------------------------------")
 
-# Test avec 3 connexions
-print("Test de plusieurs connexions :")
-total_points_connections = test_multiple_connections(3)
-print(f"Points awarded for connections: {total_points_connections}")
+    # Test avec 3 connexions
+    print("Test de plusieurs connexions :")
+    total_points_connections = test_multiple_connections(3, cwd)
+    print(f"Points awarded for connections: {total_points_connections}")
 
-print("--------------------------------------")
+    print("--------------------------------------")
 
-# Calcul de la note finale
-total_points_functionalities = test_functionalities()
-final_score = total_points_functionalities + total_points_connections
-print(f"Final score: {final_score} points")
+    # Calcul de la note finale
+    total_points_functionalities = test_functionalities(cwd)
+    final_score = total_points_functionalities + total_points_connections
+    print(f"Final score: {final_score} points")
 
-print("Test done.")
+    print("Test done.")
+
+    return final_score
