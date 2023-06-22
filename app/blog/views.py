@@ -6,7 +6,7 @@ from blog.test.compare import *
 from blog.compilation import *
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-
+import glob
 
 @login_required
 def home(request):
@@ -34,14 +34,14 @@ def submitSubject(request):
             categorie_name = subject_instance.get_categorie_display()
             sans_zip = remove_zip_extension(correction.name)
             # Utilisez la variable 'categorie_name' comme nécessaire
-    
-            decompress_zip("./data/corrections/"+ correction.name, "./data/corrections/"+categorie_name+ "/" + sans_zip +"/")
-            print("************************************************************************************************************************")
-            path= "./data/corrections/"+categorie_name+ "/" + sans_zip +"/"
-            print(path)
             
+            path= "./data/corrections/"+categorie_name+ "/" + sans_zip
+            decompress_zip("./data/corrections/"+ correction.name, path)
+            
+            correction_txt = os.getcwd() + "/blog/test/resultat.txt"
+            print(correction_txt)
            
-            compile_and_execute_correction(path + '/src', "/home/smakalou/INSA/Projet-application/app/blog/test/resultat.txt")
+            compile_and_execute_correction(path + '/src', correction_txt)
             return redirect('p_redirect')
         else:
             errors = form.errors
@@ -73,12 +73,26 @@ def submitWork(request):
             
             
             sans_zip = remove_zip_extension(devoir.name)
+
+            print("******************************************")
+            print(devoir.name)
+            
             categorie_name = subject_instance.get_categorie_display()
-            decompress_zip("./data/devoirs/"+ devoir.name, "./data/devoirs/"+categorie_name+ "/" + sans_zip +"/")
-            path= "./data/devoirs/"+categorie_name+ "/" + sans_zip +"/"
+            path_devoirs = "./data/devoirs/"+ categorie_name + "/" + sans_zip
+            decompress_zip("./data/devoirs/"+ devoir.name, path_devoirs)
+            
+            devoir_txt = os.getcwd() + "/blog/test/resultat_etudiant.txt"
+            correction_txt = os.getcwd() + "/blog/test/resultat.txt"
            
-            note = compile_exec_text("./data/corrections/"+categorie_name+ "/" + sans_zip +"/src/main.c"
-                              ,path+'/src',"/home/smakalou/INSA/Projet-application/app/blog/test/resultat_etudiant.txt","/home/smakalou/INSA/Projet-application/app/blog/test/resultat.txt")
+            note = compile_exec_text("./data/corrections/" + categorie_name + "/" + sans_zip +"/src/main.c"
+                              ,path_devoirs +'/src', devoir_txt, correction_txt)
+
+            # Iterate over the zip files and delete them
+            for zip_file in glob.glob(os.path.join("./data/devoirs", '*.zip')):
+                os.remove(zip_file)
+
+            print("All zip files have been deleted.")
+
             
             #Ajout des résultats de l'élève dans la table Resultat
             work_result=Resultat(
