@@ -1,24 +1,46 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static widget_tweaks %}  <!-- Assurez-vous d'ajouter widget_tweaks pour ajouter des classes CSS aux champs du formulaire -->
+
 {% block extra_css %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 {% endblock extra_css %}
 
 {% block extra_js %}
-    {% load static %}
-    <script src="{% static '/js/scripts.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
 {% endblock extra_js %}
 
-
 {% block content %}
-    <h2>Inscription</h2>
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >S’inscrire</button>
-    </form>
+<div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+        <div class="col-md-6">
+            <div class="text-center mb-5">
+                <img src="{% static 'images/logo.png' %}" alt="Logo du site" class="img-fluid" style="max-width: 200px;">
+                <h1 class="mt-3">Inscription</h1>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" class="p-3">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field|add_class:"form-control" }} <!-- Ajoute la classe "form-control" aux champs de formulaire -->
+                                {% if field.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ field.errors|striptags }} <!-- Affiche les erreurs pour chaque champ -->
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block">S’inscrire</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

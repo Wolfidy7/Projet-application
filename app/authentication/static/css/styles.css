@@ -465,6 +465,44 @@ legend + * {
   font: inherit;
   -webkit-appearance: button;
 }
+/* Dans styles.css */
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.green-background  {
+  background: linear-gradient(-45deg, #28a745, #218838, #1e7e34, #1c7430);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;  /* Changer la police */
+  background-color: #f5f5f5;  /* Changer la couleur d'arrière-plan */
+}
+
+.container {
+  margin-top: 100px;  /* Ajouter de l'espace en haut */
+}
+
+/* Personnaliser les champs du formulaire */
+.form-group label {
+  color: #333;  /* Changer la couleur du texte des labels */
+  font-weight: bold;  /* Rendre le texte des labels gras */
+}
+
+.form-group input {
+  border: 2px solid #ddd;  /* Ajouter une bordure aux champs de saisie */
+  border-radius: 5px;  /* Arrondir les coins des champs de saisie */
+}
+
+/* Personnaliser le bouton de soumission */
+.btn-primary {
+  background-color: #0f0;  /* Changer la couleur d'arrière-plan du bouton */
+  color: #000;  /* Changer la couleur du texte du bouton */
+}
 
 output {
   display: inline-block;
