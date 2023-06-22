@@ -1,13 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from . import forms, models
+import authentication.models
 from blog.models import *
 from blog.test.compare import *
 from blog.compilation import *
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import glob
-from blog.test_gentoo import *
 from django.http import HttpResponse
 from django.conf import settings
 
@@ -35,30 +34,18 @@ def submitSubject(request):
                 id_user=user
             )
             subject_instance.save()
+
             categorie_name = subject_instance.get_categorie_display()
-
-            if categorie_name == "TP_Systeme":
-                print("------------------> SYSTEM")
-                
-                sans_zip = remove_zip_extension(correction.name)
-                # Utilisez la variable 'categorie_name' comme nécessaire
-
-                print("-------> ", categorie_name)
-                
-                path= "./data/corrections/"+categorie_name+ "/" + sans_zip
-                decompress_zip("./data/corrections/"+ correction.name, path)
-                
-                correction_txt = os.getcwd() + "/blog/test/resultat.txt"
-                print(correction_txt)
+            sans_zip = remove_zip_extension(correction.name)
+            # Utilisez la variable 'categorie_name' comme nécessaire
+    
+            decompress_zip("./data/corrections/"+ correction.name, "./data/corrections/"+categorie_name+ "/" + sans_zip +"/")
+            print("************************************************************************************************************************")
+            path= "./data/corrections/"+categorie_name+ "/" + sans_zip +"/"
+            print(path)
             
-                compile_and_execute_correction(path + '/src', correction_txt)
-
-            if categorie_name == "TP_Gentoo":
-                print("------------------> GENTOO")
-
-            if categorie_name == "TP_serverIRC":
-                print("------------------> IRC")
-
+           
+            compile_and_execute_correction(path + '/src', "/home/smakalou/INSA/Projet-application/app/blog/test/resultat.txt")
             return redirect('p_redirect')
         else:
             errors = form.errors
@@ -98,32 +85,15 @@ def submitWork(request):
             )
          
             subject_instance.save() #Sauvegarde dans la table Subject de la BDD
+            
+            
+            sans_zip = remove_zip_extension(devoir.name)
             categorie_name = subject_instance.get_categorie_display()
-
-            if categorie_name == "TP_Systeme":
-                print("------------------> SYSTEM")
-                if zipfile.is_zipfile(devoir):
-                    note = eval_tp_system(categorie_name, devoir)
-                else :
-                    # le fichier fournir n'est pas .zip
-                    print("pas zip")
-                    alert_message = "Le fichier fourni n'est pas un fichier .zip."
-                    return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
-
-
-            if categorie_name == "TP_Gentoo":
-                print("------------------> GENTOO")
-                if tarfile.is_tarfile(devoir) and devoir.name.endswith('.bz2'):
-                    note = eval_tp_gentoo(categorie_name, devoir)
-                else :
-                    # le fichier fournir n'est pas .zip
-                    print("pas zip")
-                    alert_message = "Le fichier fourni n'est pas un fichier .tar.bz2."
-                    return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
-
-            if categorie_name == "TP_serverIRC":
-                print("------------------> IRC")
-
+            decompress_zip("./data/devoirs/"+ devoir.name, "./data/devoirs/"+categorie_name+ "/" + sans_zip +"/")
+            path= "./data/devoirs/"+categorie_name+ "/" + sans_zip +"/"
+           
+            note = compile_exec_text("./data/corrections/"+categorie_name+ "/" + sans_zip +"/src/main.c"
+                              ,path+'/src',"/home/smakalou/INSA/Projet-application/app/blog/test/resultat_etudiant.txt","/home/smakalou/INSA/Projet-application/app/blog/test/resultat.txt")
             
             #Ajout des résultats de l'élève dans la table Resultat
             work_result=Resultat(
@@ -155,7 +125,10 @@ def view_notes(request):
     results = Resultat.objects.filter(id_user=user).select_related('id_subject')
     return render(request, 'blog/notes.html', {'results': results})
 
-
+def view_student_notes(request):
+    students = authentication.models.User.objects.filter(role='STUDENT')
+    results = Resultat.objects.filter(id_user__in=students)
+    return render(request, 'blog/notes.html', {'results': results})
 
 def view_statistics(request):
     # Récupérer les données de notes pour les catégories "SYSTEME" et "GENTOO"

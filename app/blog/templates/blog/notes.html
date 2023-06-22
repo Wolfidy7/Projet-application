@@ -7,9 +7,12 @@
 {% block content %}
     {% if results %}
         <h1>Récapitulatif de vos notes </h1>
-        <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruit  &#128521; </h4>
+        <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruits  &#128521; </h4>
 
         <table class="table">
+
+
+            {% if user.role == 'STUDENT' %}
             <thead>
                 <tr>
                     <th>Catégorie</th>
@@ -24,6 +27,28 @@
                     </tr>
                 {% endfor %}
             </tbody>
+            {% endif %}
+            {% comment %} POUR LE PROFESSEUR {% endcomment %}
+            {% if user.role == 'PROFESSOR' %}
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Note</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.id_subject.username }}</td>
+                        <td>{{ result.id_subject.categorie }}</td>
+                        <td>{{ result.note }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            {% endif %}
+
         </table>
     {% else %}
     <h1>Récapitulatif de vos notes </h1>

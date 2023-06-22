@@ -30,4 +30,5 @@ urlpatterns = [
     path('mes_notes/',blog.views.view_notes, name='notes'),
     path('statistics/',blog.views.view_statistics, name='stats'),
     path('available_subjects/', blog.views.show_availables, name='availables'),
+    path('available_subjects/', blog.views.view_student_notes, name='availables'),
 ]
