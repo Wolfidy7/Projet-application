@@ -76,9 +76,6 @@ def submitWork(request):
         
         if form.is_valid():
 
-
-
-
             categorie = form.cleaned_data['categorie']
             devoir = request.FILES['devoir']
             user=request.user
@@ -87,7 +84,8 @@ def submitWork(request):
             has_grade = Resultat.objects.filter(id_user=user, id_subject__categorie=categorie).exists()
             if has_grade:
                 # Rediriger ou afficher un message d'erreur indiquant à l'élève qu'il ne peut pas soumettre un autre sujet
-                return HttpResponse('Vous avez déjà une note pour cette catégorie. Vous ne pouvez pas soumettre un autre sujet.')
+                alert_message = 'Vous avez déjà une note pour cette catégorie. Vous ne pouvez pas soumettre un autre sujet.'
+                return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
             
             #Subject.objects.filter(id_user=user, categorie=categorie).delete() #Suppression des anciennes soumissions dans la BDD
            
@@ -103,10 +101,9 @@ def submitWork(request):
             if categorie_name == "TP_Systeme":
                 print("------------------> SYSTEM")
                 if zipfile.is_zipfile(devoir):
-                    note = eval_tp_system(categorie_name, devoir)
+                    note = eval_tp_system(categorie_name, devoir, user.username)
                 else :
                     # le fichier fournir n'est pas .zip
-                    print("pas zip")
                     alert_message = "Le fichier fourni n'est pas un fichier .zip."
                     return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
 
@@ -114,17 +111,22 @@ def submitWork(request):
             if categorie_name == "TP_Gentoo":
                 print("------------------> GENTOO")
                 if tarfile.is_tarfile(devoir) and devoir.name.endswith('.bz2'):
-                    note = eval_tp_gentoo(categorie_name, devoir)
+                    note = eval_tp_gentoo(categorie_name, devoir, user.username)
                 else :
                     # le fichier fournir n'est pas .zip
                     print("pas zip")
                     alert_message = "Le fichier fourni n'est pas un fichier .tar.bz2."
                     return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
 
-            if categorie_name == "TP_serverIRC":
+            if categorie_name == "TP_Reseau":
                 print("------------------> IRC")
+                if zipfile.is_zipfile(devoir):
+                    note = eval_tp_reseau(categorie_name, devoir, user.username)
+                else :
+                    # le fichier fournir n'est pas .zip
+                    alert_message = "Le fichier fourni n'est pas un fichier .zip."
+                    return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
 
-            
             #Ajout des résultats de l'élève dans la table Resultat
             work_result=Resultat(
                 id_user =user,

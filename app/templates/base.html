@@ -17,19 +17,9 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
     <body id="element">
-        <h1>CORRECT'INSA</h1>
         <div class="container-fluid h-100">
             <div class="row vh-100">
                 <div class="col-3 d-flex flex-column" style="background-color: red;">
-        
-        {%  if user.is_authenticated %}
-            <p>Vous êtes connecté en tant que {{ user }}.</p>
-            <a href="{% url 'home' %}">Accueil</a><br>
-            <a href="{% url 'availables' %}">Sujets disponibles</a><br>
-            {% if user.role == 'STUDENT' %}
-            <a href="{% url 'e_submit' %}">Soumettre un devoir</a><br>
-            <a href="{% url 'notes' %}">Mes notes</a><br>
-            {% endif %}
 
                     <div class="card  mb-3">
                         <h1>CORRECT'INSA-CVL</h1>
@@ -53,6 +43,12 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <a href="{% url 'home' %}" class="btn btn-outline-primary btn-block ">Accueil</a>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <a href="{% url 'availables' %}" class="btn btn-outline-primary btn-block ">Sujets disponibles</a>
                             </div>
                         </div>
 

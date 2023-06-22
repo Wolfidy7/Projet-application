@@ -17,24 +17,22 @@ def compile_and_execute_correction(correction_dir, text):
     with open(text, 'w') as output_file:
         subprocess.run('./program', stdout=output_file, cwd=correction_dir, shell=True)
 
-def compile_and_execute(student_src_dir, resultat_etudiant):
-    
-    # Chemin du code d'eleve
-    # contenant les fichiers C
+def compile_and_execute(student_src_dir, resultat_etudiant, nom_exec):
+
     student_src_dir = student_src_dir
 
     # Liste des fichiers C dans le student_src_dir
     fichiers_c =  [fichier for fichier in os.listdir(student_src_dir) if fichier.endswith('.c')]
 
     # Commande de compilation
-    commande_compilation = ['gcc', '-o', 'program'] + [fichier for fichier in fichiers_c]
+    commande_compilation = ['gcc', '-o', nom_exec] + [fichier for fichier in fichiers_c]
 
     # Compilation des fichiers
     subprocess.run(commande_compilation, cwd=student_src_dir)
 
     # Exécution du programme et sauvegarde de la sortie dans un fichier
     with open(resultat_etudiant, 'w') as output_file:
-        subprocess.run('./program', stdout=output_file, cwd=student_src_dir, shell=True)
+        subprocess.run('./' + nom_exec, stdout=output_file, cwd=student_src_dir, shell=True)
 
 def compare(student_text, correction_text):
 
@@ -59,11 +57,10 @@ def compile_exec_text(path_main_prof, path_src_student, resultat_etudiant, resul
 # def compile_exec_text():
 
     # copy main file
-    shutil.copy(path_main_prof, path_src_student)
-        
+    shutil.copy(path_main_prof, path_src_student)     
 
     # chaque fois aue l'eleve transmis son travail
-    compile_and_execute(path_src_student, resultat_etudiant)
+    compile_and_execute(path_src_student, resultat_etudiant, 'program')
 
     result = compare(resultat_etudiant, resultat_prof)
     print("Note obtenue:", result)
