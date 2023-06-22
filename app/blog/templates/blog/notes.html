@@ -1,13 +1,30 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
 {% block content %}
-
-    {% for result in results %}
-    <tr>
-        <td>{{ result.id_user }}</td>
-        <td>{{ result.id_subject.categorie }}</td>  <!-- Affichage de la catégorie -->
-        <td>{{ result.note }}</td>
-    </tr> 
-    {% endfor %}                                                                        
-
+    {% if results %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Utilisateur</th>
+                    <th>Catégorie</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.id_user }}</td>
+                        <td>{{ result.id_subject.categorie }}</td>
+                        <td>{{ result.note }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="no-notes-message">Vous n'avez pas de notes disponibles.</p>
+    {% endif %}
 {% endblock content %}

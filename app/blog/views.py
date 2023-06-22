@@ -35,13 +35,11 @@ def submitSubject(request):
             sans_zip = remove_zip_extension(correction.name)
             # Utilisez la variable 'categorie_name' comme nécessaire
     
-            decompress_zip("./data/corrections/"+ correction.name, "./data/corrections/"+categorie_name+ "/" + sans_zip +"/")
-            print("************************************************************************************************************************")
-            path= "./data/corrections/"+categorie_name+ "/" + sans_zip +"/"
-            print(path)
-            
-           
-            compile_and_execute_correction(path + '/src', "/home/smakalou/INSA/Projet-application/app/blog/test/resultat.txt")
+            path = "./data/corrections/"+categorie_name+ "/" + sans_zip 
+            decompress_zip("./data/corrections/"+ correction.name, path)
+            correction_txt = os.getcwd() + "/blog/test/resultat.txt"
+
+            compile_and_execute_correction(path + '/src', correction_txt)
             return redirect('p_redirect')
         else:
             errors = form.errors
@@ -74,11 +72,16 @@ def submitWork(request):
             
             sans_zip = remove_zip_extension(devoir.name)
             categorie_name = subject_instance.get_categorie_display()
-            decompress_zip("./data/devoirs/"+ devoir.name, "./data/devoirs/"+categorie_name+ "/" + sans_zip +"/")
-            path= "./data/devoirs/"+categorie_name+ "/" + sans_zip +"/"
+            path= "./data/devoirs/"+categorie_name+ "/" + sans_zip
+
+            decompress_zip("./data/devoirs/"+ devoir.name, path)
+            correction_txt = os.getcwd() + "/blog/test/resultat.txt"
+            devoir_txt = os.getcwd() + "/blog/test/resultat_etudiant.txt"
+
+            
            
             note = compile_exec_text("./data/corrections/"+categorie_name+ "/" + sans_zip +"/src/main.c"
-                              ,path+'/src',"/home/smakalou/INSA/Projet-application/app/blog/test/resultat_etudiant.txt","/home/smakalou/INSA/Projet-application/app/blog/test/resultat.txt")
+                              ,path+'/src', devoir_txt, correction_txt)
             
             #Ajout des résultats de l'élève dans la table Resultat
             work_result=Resultat(

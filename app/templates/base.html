@@ -9,62 +9,66 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <!-- Ajout du CSS personnalisé -->
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-    {% endblock extra_css %}
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        {% endblock extra_css %}
     
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
-    <body>
+    <body id="element">
         <div class="container-fluid h-100">
             <div class="row vh-100">
-                <div class="col-3 bg-success d-flex flex-column">
+                <div class="col-3 bg-dark d-flex flex-column">
 
-                    <div class="card bg-light mb-3">
+                    <div class="card bg-transparent mb-3">
                         <div class="card-header">CORRECT'INSA</div>
-                        <div class="card-body">
+                        <div class="card-body  text-white-card">
                             {%  if user.is_authenticated %}
                                 <p>Vous êtes connecté en tant que {{ user }}.</p>
                             {% endif %}
                         </div>
                     </div>
+                    
 
                     {% if user.is_authenticated %}
-                        <div class="card bg-light mb-3">
+                        <div class="card bg-transparent mb-3">
                             <div class="card-body">
-                                <a href="{% url 'home' %}"class="btn btn-outline-success btn-block">Accueil</a>
+                                <a href="{% url 'home' %}" class="btn btn-outline-success btn-block btn-custom">Accueil</a>
                             </div>
                         </div>
 
                         {% if user.role == 'STUDENT' %}
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-transparent mb-3">
                                 <div class="card-body">
-                                    <a href="{% url 'e_submit' %}"class="btn btn-outline-success btn-block">Soumettre un devoir</a>
+                                    <a href="{% url 'e_submit' %}" class="btn btn-outline-success btn-block btn-custom">Soumettre un devoir</a>
                                 </div>
                             </div>
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-transparent mb-3">
                                 <div class="card-body">
-                                    <a href="{% url 'notes' %}"class="btn btn-outline-success btn-block">Mes notes</a>
+                                    <a href="{% url 'notes' %}" class="btn btn-outline-success btn-block btn-custom">Mes notes</a>
                                 </div>
                             </div>
                         {% endif %}
 
                         {% if user.role == 'PROFESSOR' %}
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-transparent mb-3">
                                 <div class="card-body">
-                                    <a href="{% url 'p_submit'%}"class="btn btn-outline-success btn-block">Soumettre un sujet</a>
+                                    <a href="{% url 'p_submit'%}" class="btn btn-outline-success btn-block btn-custom">Soumettre un sujet</a>
                                 </div>
                             </div>
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-transparent mb-3">
                                 <div class="card-body">
-                                    <a href="{% url 'stats'%}"class="btn btn-outline-success btn-block">Statistiques</a>
+                                    <a href="{% url 'stats'%}" class="btn btn-outline-success btn-block btn-custom">Statistiques</a>
                                 </div>
                             </div>
                         {% endif %}
-                        <div class="card bg-light mb-3">
+                        <div class="card bg-transparent mb-3">
                             <div class="card-body">
-                                <a href="{% url 'logout' %}"class="btn btn-outline-success btn-block">Se déconnecter</a>
+                                <a href="{% url 'logout' %}" class="btn btn-outline-success btn-block btn-custom">Se déconnecter</a>
                             </div>
                         </div>
-                        <div class="card bg-light mb-3">
+                        <div class="card bg-transparent mb-3">
                             <div class="card-body">
                                 <p>Voulez-vous <a href="{% url 'password_change' %}">changer votre mot de passe ?</a></p>
                             </div>

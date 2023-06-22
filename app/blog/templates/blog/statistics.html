@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% load static %}
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
-                                                                         
-<h1>Statistiques des résultats par catégorie</h1>
+{% block content %}
+    <h1>Statistiques des résultats par catégorie</h1>
     <div id="graph0"></div>
 
     <script>
@@ -22,9 +24,4 @@
         // Afficher le graphique en utilisant Plotly.js
         Plotly.newPlot('graph1', graphJSON1);
     </script>
-    
 {% endblock content %}
-
-
-
-

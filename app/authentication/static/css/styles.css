@@ -472,11 +472,144 @@ legend + * {
   100% {background-position: 0% 50%;}
 }
 
-.green-background  {
-  background: linear-gradient(-45deg, #28a745, #218838, #1e7e34, #1c7430);
+#mon-element {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(-45deg, #23a6d5, #23d5ab, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
 }
+.btn-custom {
+  font-family: 'Roboto', sans-serif; /* Changement du type de police */
+  font-size: 20px; /* Augmentation de la taille de la police */
+  transition: transform .2s; /* Animation */
+}
+
+.btn-custom:hover {
+  transform: scale(1.1); /* Zoom lorsque la souris est sur le bouton */
+}
+body#mon-element {
+  background-color: black;
+}
+
+.btn-custom {
+  font-family: 'Roboto', sans-serif; /* Changement du type de police */
+  font-size: 30px; /* Augmentation de la taille de la police */
+  transition: transform .2s; /* Animation */
+  color: rgb(17, 211, 17); /* Couleur de la police en vert */
+  border-color: #1cc91c; /* Couleur de la bordure en vert */
+}
+.container {
+  margin-top: 50px;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.lead {
+  font-size: 20px;
+}
+
+.quote {
+  font-size: 24px;
+  font-style: italic;
+  color: #333;
+}
+/* styles.css */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+p.no-notes-message {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+}
+
+.quote-author {
+  font-size: 18px;
+  font-weight: bold;
+  color: #777;
+  margin-top: 10px;
+}
+h1 {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+#graph0, #graph1 {
+  margin-top: 50px;
+}
+.logo-image {
+  width: 150px;
+  position: absolute;
+  top: 0px;
+  right: -30px;
+}
+
+
+
+.main-image {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.quote {
+  font-family: 'Arial', sans-serif;
+}
+
+.btn-custom:hover {
+  transform: scale(1.1); /* Zoom lorsque la souris est sur le bouton */
+  color: white; /* Couleur de la police en blanc lorsque la souris est sur le bouton */
+}
+
+.card.bg-transparent {
+  background-color: transparent !important;
+}
+
+.card.bg-light {
+  background-color: rgba(255,255,255,0.1) !important; /* Transparence du fond des cartes */
+  border-color: rgb(249, 250, 249); /* Bordure verte pour les cartes */
+}
+.text-white-card {
+  color: white;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif; /* ou n'importe quelle autre police que vous préférez */
+}
+
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.card {
+  background-color: rgba(255, 255, 255, 0.3);  /* blanc semi-transparent */
+  backdrop-filter: blur(10px);  /* effet de flou derrière la carte */
+}
+
 
 body {
   font-family: 'Quicksand', sans-serif;  /* Changer la police */
