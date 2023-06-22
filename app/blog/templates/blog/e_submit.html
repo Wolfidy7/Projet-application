@@ -1,12 +1,51 @@
+
 {% extends 'base.html' %}
 
+</html>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  {% load static %}
+  <!-- Custom CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+  <title>Document</title>
+</head>
+<body id="mon-element">
+    {% load widget_tweaks %}
 {% block content %}
-
-    <h3>Veuillez soumettre votre devoir</h3>
-
-    <form method="post" enctype="multipart/form-data">
-    {{ formi.as_p}}
-    {% csrf_token %}
-    <button type="submit">Déposer le devoir</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h3 class="mb-4">Veuillez soumettre votre devoir</h3>
     
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in formi %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field|add_class:'form-control' }}
+                        {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Déposer le devoir</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+</body>
+</html>
+
+

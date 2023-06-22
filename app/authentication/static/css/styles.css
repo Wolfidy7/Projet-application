@@ -516,29 +516,6 @@ h2 {
   font-style: italic;
   color: #333;
 }
-/* styles.css */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-p.no-notes-message {
-  text-align: center;
-  font-style: italic;
-  color: #999;
-}
 
 .quote-author {
   font-size: 18px;
@@ -546,15 +523,27 @@ p.no-notes-message {
   color: #777;
   margin-top: 10px;
 }
-h1 {
-  text-align: center;
-  margin-top: 50px;
-  font-size: 32px;
-  font-weight: bold;
+able {
+  border-collapse: collapse;
+  width: 100%;
 }
 
-#graph0, #graph1 {
-  margin-top: 50px;
+th, td {
+  border: 1px solid rgb(86, 3, 3);
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #a29b9b;
+  color: #780202;
+  font-family: Arial,solid, sans-serif;
+}
+
+td {
+  background-color: #ffffff;
+  color: #5a24e4;
+  font-family: Verdana, sans-serif;
 }
 .logo-image {
   width: 150px;
@@ -3149,6 +3138,14 @@ textarea.form-control-lg {
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: #212529;
   --bs-btn-disabled-border-color: #212529;
+}
+.btn-outline-primary {
+  color: black !important;
+  border-color: white !important;
+}
+.btn-outline-primary:hover {
+  color: white !important;
+  background-color: red !important;
 }
 
 .btn-outline-primary {

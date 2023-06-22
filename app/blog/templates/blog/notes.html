@@ -2,14 +2,16 @@
 
 {% load static %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
 {% block content %}
     {% if results %}
+        <h1>Récapitulatif de vos notes </h1>
+        <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruit  &#128521; </h4>
+
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID Utilisateur</th>
                     <th>Catégorie</th>
                     <th>Note</th>
                 </tr>
@@ -17,7 +19,6 @@
             <tbody>
                 {% for result in results %}
                     <tr>
-                        <td>{{ result.id_user }}</td>
                         <td>{{ result.id_subject.categorie }}</td>
                         <td>{{ result.note }}</td>
                     </tr>
@@ -25,6 +26,8 @@
             </tbody>
         </table>
     {% else %}
-        <p class="no-notes-message">Vous n'avez pas de notes disponibles.</p>
+    <h1>Récapitulatif de vos notes </h1>
+
+        <p class="no-notes-message">Oops, Vous n'avez pas de notes disponibles.  &#128531;</p>
     {% endif %}
 {% endblock content %}
