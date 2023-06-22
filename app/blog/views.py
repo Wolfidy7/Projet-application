@@ -7,6 +7,7 @@ from blog.compilation import *
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import glob
+from blog.test_gentoo import *
 
 @login_required
 def home(request):
@@ -30,18 +31,30 @@ def submitSubject(request):
                 id_user=user
             )
             subject_instance.save()
-
             categorie_name = subject_instance.get_categorie_display()
-            sans_zip = remove_zip_extension(correction.name)
-            # Utilisez la variable 'categorie_name' comme nécessaire
+
+            if categorie_name == "TP_Systeme":
+                print("------------------> SYSTEM")
+                
+                sans_zip = remove_zip_extension(correction.name)
+                # Utilisez la variable 'categorie_name' comme nécessaire
+
+                print("-------> ", categorie_name)
+                
+                path= "./data/corrections/"+categorie_name+ "/" + sans_zip
+                decompress_zip("./data/corrections/"+ correction.name, path)
+                
+                correction_txt = os.getcwd() + "/blog/test/resultat.txt"
+                print(correction_txt)
             
-            path= "./data/corrections/"+categorie_name+ "/" + sans_zip
-            decompress_zip("./data/corrections/"+ correction.name, path)
-            
-            correction_txt = os.getcwd() + "/blog/test/resultat.txt"
-            print(correction_txt)
-           
-            compile_and_execute_correction(path + '/src', correction_txt)
+                compile_and_execute_correction(path + '/src', correction_txt)
+
+            if categorie_name == "TP_Gentoo":
+                print("------------------> GENTOO")
+
+            if categorie_name == "TP_serverIRC":
+                print("------------------> IRC")
+
             return redirect('p_redirect')
         else:
             errors = form.errors
@@ -70,28 +83,31 @@ def submitWork(request):
             )
          
             subject_instance.save() #Sauvegarde dans la table Subject de la BDD
-            
-            
-            sans_zip = remove_zip_extension(devoir.name)
-
-            print("******************************************")
-            print(devoir.name)
-            
             categorie_name = subject_instance.get_categorie_display()
-            path_devoirs = "./data/devoirs/"+ categorie_name + "/" + sans_zip
-            decompress_zip("./data/devoirs/"+ devoir.name, path_devoirs)
-            
-            devoir_txt = os.getcwd() + "/blog/test/resultat_etudiant.txt"
-            correction_txt = os.getcwd() + "/blog/test/resultat.txt"
-           
-            note = compile_exec_text("./data/corrections/" + categorie_name + "/" + sans_zip +"/src/main.c"
-                              ,path_devoirs +'/src', devoir_txt, correction_txt)
 
-            # Iterate over the zip files and delete them
-            for zip_file in glob.glob(os.path.join("./data/devoirs", '*.zip')):
-                os.remove(zip_file)
+            if categorie_name == "TP_Systeme":
+                print("------------------> SYSTEM")
+                if zipfile.is_zipfile(devoir):
+                    note = eval_tp_system(categorie_name, devoir)
+                else :
+                    # le fichier fournir n'est pas .zip
+                    print("pas zip")
+                    alert_message = "Le fichier fourni n'est pas un fichier .zip."
+                    return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
 
-            print("All zip files have been deleted.")
+
+            if categorie_name == "TP_Gentoo":
+                print("------------------> GENTOO")
+                if tarfile.is_tarfile(devoir) and devoir.name.endswith('.bz2'):
+                    note = eval_tp_gentoo(categorie_name, devoir)
+                else :
+                    # le fichier fournir n'est pas .zip
+                    print("pas zip")
+                    alert_message = "Le fichier fourni n'est pas un fichier .tar.bz2."
+                    return render(request, 'blog/e_submit.html', {'formi': form, 'alert_message': alert_message})
+
+            if categorie_name == "TP_serverIRC":
+                print("------------------> IRC")
 
             
             #Ajout des résultats de l'élève dans la table Resultat

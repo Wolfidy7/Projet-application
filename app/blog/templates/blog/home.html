@@ -1,4 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
 {% block content %}
-    <p>Plateforme OpenSource de correction automatique de devoir.</p>
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-9">
+                <h2 class="text-center">Bienvenue sur Correct'INSA</h2>
+                <p class="lead text-center">La plateforme OpenSource de correction automatique de devoirs.</p>
+
+                <!-- Ajout de l'image du logo en haut à droite -->
+                <img src="{% static 'images/logo.png' %}" alt="Logo Correct'INSA" class="logo-image">
+
+                <!-- Ajout de l'image principale plus grande -->
+                <img src="{% static 'images/ecole.png' %}" alt="Une description de l'image" class="main-image">
+
+                <!-- Ajout de la citation -->
+                <div class="quote">
+                    <p>"Optimisez votre temps et simplifiez la correction de devoirs grâce à Correct'INSA"</p>
+                    <p class="quote-author">Équipe Correct'INSA</p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

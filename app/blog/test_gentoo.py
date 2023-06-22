@@ -150,9 +150,9 @@ def check_lvm(lvm_section):
     return vg_present and backup_present and backup_mounted and data_present and data_mounted
 
 
-
-if __name__ == "__main__":
-    file_path = "/home/ibtissam/Téléchargements/tmp/evaluation/evaluation1.txt"
+def run_evaluation_gentoo(file_path):
+# if __name__ == "__main__":
+#     file_path = "/home/ibtissam/Téléchargements/tmp/evaluation/evaluation1.txt"
 
     sections = {
         "CRON": {
@@ -201,3 +201,5 @@ if __name__ == "__main__":
             print(section_info["message_missing"])
 
     print("La note finale est", note)
+
+    return note
