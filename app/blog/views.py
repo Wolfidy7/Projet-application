@@ -1,13 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from . import forms, models
+import authentication.models
 from blog.models import *
 from blog.test.compare import *
 from blog.compilation import *
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import glob
-from blog.test_gentoo import *
 from django.http import HttpResponse
 from django.conf import settings
 
@@ -35,30 +34,18 @@ def submitSubject(request):
                 id_user=user
             )
             subject_instance.save()
+
             categorie_name = subject_instance.get_categorie_display()
-
-            if categorie_name == "TP_Systeme":
-                print("------------------> SYSTEM")
-                
-                sans_zip = remove_zip_extension(correction.name)
-                # Utilisez la variable 'categorie_name' comme nécessaire
-
-                print("-------> ", categorie_name)
-                
-                path= "./data/corrections/"+categorie_name+ "/" + sans_zip
-                decompress_zip("./data/corrections/"+ correction.name, path)
-                
-                correction_txt = os.getcwd() + "/blog/test/resultat.txt"
-                print(correction_txt)
+            sans_zip = remove_zip_extension(correction.name)
+            # Utilisez la variable 'categorie_name' comme nécessaire
+    
+            decompress_zip("./data/corrections/"+ correction.name, "./data/corrections/"+categorie_name+ "/" + sans_zip +"/")
+            print("************************************************************************************************************************")
+            path= "./data/corrections/"+categorie_name+ "/" + sans_zip +"/"
+            print(path)
             
-                compile_and_execute_correction(path + '/src', correction_txt)
-
-            if categorie_name == "TP_Gentoo":
-                print("------------------> GENTOO")
-
-            if categorie_name == "TP_serverIRC":
-                print("------------------> IRC")
-
+           
+            compile_and_execute_correction(path + '/src', "/home/dini/Projet-application/app/blog/test/resultat.txt")
             return redirect('p_redirect')
         else:
             errors = form.errors
@@ -96,6 +83,7 @@ def submitWork(request):
             )
          
             subject_instance.save() #Sauvegarde dans la table Subject de la BDD
+            
             categorie_name = subject_instance.get_categorie_display()
 
             if categorie_name == "TP_Systeme":
@@ -154,10 +142,17 @@ def e_redirect(request):
 
 def view_notes(request):
     user = request.user
-    results = Resultat.objects.filter(id_user=user).select_related('id_subject')
+    results = Resultat.objects.select_related('id_subject').filter(id_user=user)
+    
     return render(request, 'blog/notes.html', {'results': results})
 
 
+def view_student_notes(request):
+    students = authentication.models.User.objects.filter(role='STUDENT')
+    results1 = Resultat.objects.select_related('id_user').filter(id_user__in=students)
+    print("******************")
+    print(results1)
+    return render(request, 'blog/notes.html', {'results1': results1})
 
 def view_statistics(request):
     # Récupérer les données de notes pour les catégories "SYSTEME" et "GENTOO"
@@ -210,6 +205,6 @@ def view_statistics(request):
 def show_availables(request):
     objets = Subject.objects.exclude(subject__exact='')
     print("***************************")
-    print(objets)
-    context = {'objets': objets, 'CORRECTION_URL': settings.CORRECTION_URL}
+    print(objets[0].url)
+    context = {'objets': objets}
     return render(request, 'blog/availables.html', context)

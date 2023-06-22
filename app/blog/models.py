@@ -10,6 +10,8 @@ class Subject(models.Model):
     @property
     def url(self):
         # Générer l'URL du fichier en utilisant le nom du fichier
+        print("*******************************************************************************")
+        print(staticfiles_storage.url(self.subject.name))
         return staticfiles_storage.url(self.subject.name)
     SYSTEME='SYSTEME'
     GENTOO = 'GENTOO'

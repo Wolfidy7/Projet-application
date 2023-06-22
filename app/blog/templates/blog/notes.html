@@ -5,11 +5,15 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
 {% block content %}
-    {% if results %}
-        <h1>Récapitulatif de vos notes </h1>
-        <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruit  &#128521; </h4>
+    {% if results or results1 %}
+        <h1>Récapitulatif des notes </h1>
+        
 
         <table class="table">
+
+
+            {% if user.role == 'STUDENT' %}
+            <h4>Continuez à persévérer, votre travail acharné finira par porter ses fruits  &#128521; </h4>
             <thead>
                 <tr>
                     <th>Catégorie</th>
@@ -24,9 +28,31 @@
                     </tr>
                 {% endfor %}
             </tbody>
+            {% endif %}
+            {% comment %} POUR LE PROFESSEUR {% endcomment %}
+            {% if user.role == 'PROFESSOR' %}
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Note</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for result1 in results1 %}
+                    <tr>
+                        <td>{{ result1.id_subject.id_user.username }}</td>
+                        <td>{{ result1.id_subject.categorie }}</td>
+                        <td>{{ result1.note }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            {% endif %}
+
         </table>
     {% else %}
-    <h1>Récapitulatif de vos notes </h1>
+    <h1>Récapitulatif des notes </h1>
 
         <p class="no-notes-message">Oops, Vous n'avez pas de notes disponibles.  &#128531;</p>
     {% endif %}
