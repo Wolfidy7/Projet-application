@@ -16,7 +16,6 @@ from django.conf import settings
 def home(request):
     return render(request, 'blog/home.html')
 
-
 @login_required
 def submitSubject(request):
     if request.method == 'POST':
@@ -34,18 +33,30 @@ def submitSubject(request):
                 id_user=user
             )
             subject_instance.save()
-
             categorie_name = subject_instance.get_categorie_display()
-            sans_zip = remove_zip_extension(correction.name)
-            # Utilisez la variable 'categorie_name' comme nécessaire
-    
-            decompress_zip("./data/corrections/"+ correction.name, "./data/corrections/"+categorie_name+ "/" + sans_zip +"/")
-            print("************************************************************************************************************************")
-            path= "./data/corrections/"+categorie_name+ "/" + sans_zip +"/"
-            print(path)
+
+            if categorie_name == "TP_Systeme":
+                print("------------------> SYSTEM")
+                
+                sans_zip = remove_zip_extension(correction.name)
+                # Utilisez la variable 'categorie_name' comme nécessaire
+
+                print("-------> ", categorie_name)
+                
+                path= "./data/corrections/"+categorie_name+ "/" + sans_zip
+                decompress_zip("./data/corrections/"+ correction.name, path)
+                
+                correction_txt = os.getcwd() + "/blog/test/resultat.txt"
+                print(correction_txt)
             
-           
-            compile_and_execute_correction(path + '/src', "/home/dini/Projet-application/app/blog/test/resultat.txt")
+                compile_and_execute_correction(path + '/src', correction_txt)
+
+            if categorie_name == "TP_Gentoo":
+                print("------------------> GENTOO")
+
+            if categorie_name == "TP_serverIRC":
+                print("------------------> IRC")
+
             return redirect('p_redirect')
         else:
             errors = form.errors
