@@ -28,5 +28,6 @@ urlpatterns = [
     path('p_redirect/',blog.views.p_redirect, name='p_redirect'),
     path('e_redirect/',blog.views.e_redirect, name='e_redirect'),
     path('mes_notes/',blog.views.view_notes, name='notes'),
-    path('statistics/',blog.views.view_statistics, name='stats')
+    path('statistics/',blog.views.view_statistics, name='stats'),
+    path('available_subjects/', blog.views.show_availables, name='availables'),
 ]

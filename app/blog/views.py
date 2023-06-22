@@ -6,6 +6,9 @@ from blog.test.compare import *
 from blog.compilation import *
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from django.http import HttpResponse
+from django.conf import settings
+
 
 
 @login_required
@@ -59,9 +62,20 @@ def submitWork(request):
         
         if form.is_valid():
 
+
+
+
             categorie = form.cleaned_data['categorie']
             devoir = request.FILES['devoir']
             user=request.user
+
+            # Vérifier si l'élève a déjà une note pour la catégorie donnée
+            has_grade = Resultat.objects.filter(id_user=user, id_subject__categorie=categorie).exists()
+            if has_grade:
+                # Rediriger ou afficher un message d'erreur indiquant à l'élève qu'il ne peut pas soumettre un autre sujet
+                return HttpResponse('Vous avez déjà une note pour cette catégorie. Vous ne pouvez pas soumettre un autre sujet.')
+            
+            #Subject.objects.filter(id_user=user, categorie=categorie).delete() #Suppression des anciennes soumissions dans la BDD
            
             subject_instance = Subject(
                 categorie=categorie,
@@ -157,3 +171,12 @@ def view_statistics(request):
 
     context = {'graph0': graph_json, 'graph1': graph_json1}
     return render(request, 'blog/statistics.html', context)
+
+
+
+def show_availables(request):
+    objets = Subject.objects.exclude(subject__exact='')
+    print("***************************")
+    print(objets)
+    context = {'objets': objets, 'CORRECTION_URL': settings.CORRECTION_URL}
+    return render(request, 'blog/availables.html', context)

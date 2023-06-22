@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul>
+{% for objet in objets %}
+<p><a href="base.html" download>{{CORRECTION_URL }}{{objet.subject.name}}</a></p>
+{% endfor %}       
+</ul>                                                       
+
+{% endblock content %}
