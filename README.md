@@ -3,7 +3,7 @@ Ce projet a pour but de créer une plateforme de correction automatique des Trav
 
  # Pour tester le projet
  
- Aller dans "app/app"
+ Aller dans "app/"
  
  Créer un environnement Django (si non disponible): **$ python -m venv ENV**
 
