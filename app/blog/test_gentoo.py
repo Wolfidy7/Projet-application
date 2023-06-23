@@ -151,8 +151,6 @@ def check_lvm(lvm_section):
 
 
 def run_evaluation_gentoo(file_path):
-# if __name__ == "__main__":
-#     file_path = "/home/ibtissam/Téléchargements/tmp/evaluation/evaluation1.txt"
 
     sections = {
         "CRON": {
