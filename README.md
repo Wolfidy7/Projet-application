@@ -24,8 +24,10 @@ Lancer le serveur python: **$ python manage.py runserver**
 Les dossiers de Test pour les TP de système et Gentoo sont respectivement exemple_TP_SYS et test_TP_gentoo.
 
  
- 
- 
+Utilisateur par défaut:
 
+username: titi
+mdp : titi
+rôle: professeur
 
  
