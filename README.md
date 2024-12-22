@@ -1,5 +1,5 @@
 # Projet-application
-Ce projet a pour but de créer une plateforme de correction automatique des Travaux Dirigés et Travaux Pratiques des étudiants.
+Ce projet scolaire a pour but de créer une plateforme de correction automatique des Travaux Dirigés et Travaux Pratiques des étudiants.
 
  # Présentation vidéo
  https://drive.google.com/file/d/1g002qlp5Rr7j5P-nQn3NELfc4gi4tNwn/view
